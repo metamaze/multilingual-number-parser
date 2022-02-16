@@ -109,4 +109,30 @@ describe('Convert words to numbers', () => {
     const result = wordsToNumbers(words, { language: Languages['en-us'] });
     chai.expect(result).to.equal(200000);
   });
+
+  // Failing tests from words-to-numbers
+
+  it('one thirty thousand', () => {
+    const words = 'one thirty thousand';
+    const result = wordsToNumbers(words, { language: Languages['en-us'] });
+    chai.expect(result).to.equal('1 30000');
+  });
+
+  it('nineteen eighty thousand', () => {
+    const words = 'nineteen eighty thousand';
+    const result = wordsToNumbers(words, { language: Languages['en-us'] });
+    chai.expect(result).to.equal('19 80000');
+  });
+
+  it('one hundred two thousand', () => {
+    const words = 'one hundred two thousand';
+    const result = wordsToNumbers(words, { language: Languages['en-us'] });
+    chai.expect(result).to.equal(102000);
+  });
+
+  it('one hundred and two thousand', () => {
+    const words = 'one hundred and two thousand';
+    const result = wordsToNumbers(words, { language: Languages['en-us'] });
+    chai.expect(result).to.equal(102000);
+  });
 });
