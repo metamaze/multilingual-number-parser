@@ -11,3 +11,9 @@ Feel free to open issues/PR's to support other languages!
 This wasn't possible without the authors of [words-to-numbers](https://github.com/finnfiddle/words-to-numbers).
 
 # See the tests folders on how to use this package.
+
+# Supported languages
+- English
+- Dutch
+
+Feel free to open issues to support more languages. 
