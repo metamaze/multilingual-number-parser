@@ -15,5 +15,6 @@ This wasn't possible without the authors of [words-to-numbers](https://github.co
 # Supported languages
 - English
 - Dutch
+- Portuguese
 
 Feel free to open issues to support more languages. 

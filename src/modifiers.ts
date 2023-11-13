@@ -6,6 +6,9 @@ import {
   ENGLISH_SPECIFIC_SPLIT,
   ENGLISH_TEN,
   ENGLISH_UNIT,
+  PORTUGUESE_MAGNITUDE,
+  PORTUGUESE_TEN,
+  PORTUGUESE_UNIT,
   TOKEN_TYPE,
 } from './constants';
 import { getAllIndexes } from './util';
@@ -22,6 +25,7 @@ type Possibility = {
  *
  * @param possibleUnits Language specific units
  * @param possibleTens Language specific tens
+ * @param possibleHundreds Language specific hundreds
  * @param possibleMagnitudes Language specific magnitudes
  * @param chunk A piece of the text
  * @returns {Possibility[]}
@@ -29,6 +33,7 @@ type Possibility = {
 function calculatePossibilities(
   possibleUnits: string[],
   possibleTens: string[],
+  possibleHundreds: string[],
   possibleMagnitudes: string[],
   chunk: string
 ): Possibility[] {
@@ -54,6 +59,19 @@ function calculatePossibilities(
         start,
         end,
         type: TOKEN_TYPE.TEN,
+        value: possibility,
+      });
+    });
+  });
+
+  possibleHundreds.forEach(possibility => {
+    const indexes = getAllIndexes(chunk, possibility);
+    indexes.forEach(start => {
+      const end = start + possibility.length - 1;
+      possibilities.push({
+        start,
+        end,
+        type: TOKEN_TYPE.HUNDRED,
         value: possibility,
       });
     });
@@ -151,6 +169,7 @@ export const modifyDutch = (chunk: string): string | string[] => {
   const possibilities: Possibility[] = calculatePossibilities(
     possibleUnits,
     possibleTens,
+    [],
     possibleMagnitudes,
     chunk
   );
@@ -272,6 +291,7 @@ export const modifyEnglish = (chunk: string): string | string[] => {
   const possibilities: Possibility[] = calculatePossibilities(
     possibleUnits,
     possibleTens,
+    [],
     possibleMagnitudes,
     chunk
   );
@@ -321,12 +341,95 @@ export const modifyEnglish = (chunk: string): string | string[] => {
         )
           return [longestStart.value, longestEnd.value];
       } else {
-        console.log(longestStart, longestEnd, possibleSplitter, chunk);
         throw 'CANNOT PARSE CHUNK INTO NUMBER (ENGLISH: CANNOT FIND A GOOD SPLITTER)';
       }
     }
   }
 };
+
+export const modifyPortuguese = (chunk: string): string | string[] | undefined => {
+  const units = [...Object.keys(PORTUGUESE_UNIT)];
+  const tens = [...Object.keys(PORTUGUESE_TEN)];
+  const magnitudes = [...Object.keys(PORTUGUESE_MAGNITUDE)];
+  const hundreds = [...Object.keys(PORTUGUESE_UNIT)];
+
+  if (
+    units.includes(chunk) ||
+    tens.includes(chunk) ||
+    hundreds.includes(chunk) ||
+    magnitudes.includes(chunk)
+  ) {
+    return chunk; //This chunk is already a whole number that doesnt need converting
+  }
+
+  const possibleUnits: string[] = units.filter(unit => chunk.includes(unit));
+  const possibleTens: string[] = tens.filter(ten => chunk.includes(ten));
+  const possibleHundreds: string[] = hundreds.filter(hundred => chunk.includes(hundred));
+  const possibleMagnitudes: string[] = magnitudes.filter(unit =>
+    chunk.includes(unit)
+  );
+
+  const possibilities: Possibility[] = calculatePossibilities(
+    possibleUnits,
+    possibleTens,
+    possibleHundreds,
+    possibleMagnitudes,
+    chunk
+  );
+  //Check which possibilities DO NOT OVERLAP and are valid.
+  if (possibilities.length >= 2) {
+    const { longestStart, longestEnd } = predict(possibilities, chunk);
+    if (!longestStart || !longestEnd) return [];
+    //Pick possibilities with shortest distance between start and end
+    if (longestStart.end === longestEnd.start - 1) {
+      //No Splitter in this chunk
+      return [longestStart.value, longestEnd.value];
+    } else {
+      // ! IMPORTANT: ENGLISH SPECIFIC SPLITTERS
+      //Splitter in this chunk
+      //@ts-ignore
+      let possibleSplitter: Possibility = null;
+      const possible = ENGLISH_SPECIFIC_SPLIT.some(splitter => {
+        const index = chunk.indexOf(splitter, longestStart.end);
+        if (index !== -1) {
+          possibleSplitter = {
+            start: index,
+            end: index + splitter.length - 1,
+            type: 'splitter',
+            value: splitter,
+          };
+          return (
+            longestStart.start === 0 &&
+            longestStart.end < possibleSplitter.start &&
+            possibleSplitter.end < longestEnd.start &&
+            longestEnd.end === chunk.length - 1
+          );
+        }
+        return false;
+      });
+
+      if (possible) {
+        //Perfect match
+        // ! ENGLISH SPECIFIC
+        if (
+          longestStart.type === TOKEN_TYPE.TEN &&
+          longestEnd.type === TOKEN_TYPE.UNIT
+        )
+          return [longestStart.value, longestEnd.value];
+        if (
+          longestStart.type === TOKEN_TYPE.UNIT &&
+          longestEnd.type === TOKEN_TYPE.MAGNITUDE
+        )
+          return [longestStart.value, longestEnd.value];
+      } else {
+        throw 'CANNOT PARSE CHUNK INTO NUMBER (ENGLISH: CANNOT FIND A GOOD SPLITTER)';
+      }
+    }
+  }
+  return;
+};
+
+
 
 // ! MY FIRST VERSION, KINDA WORKED BUT UNREADBLE PIECE OF GARABGE, SHOULD KEEP IT FOR REFERENCE/FUTURE
 // /**

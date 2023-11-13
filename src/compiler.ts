@@ -1,6 +1,6 @@
-import { NUMBER, TOKEN_TYPE } from './constants';
-import { Languages, Region, SubRegion } from './types';
-import { splice } from './util';
+import {NUMBER, TOKEN_TYPE} from './constants';
+import {Languages, Region, SubRegion} from './types';
+import {splice} from './util';
 
 export type Options = Partial<{
   numbersOnly: boolean;
@@ -39,11 +39,17 @@ export const compileSubRegion = (subRegion: SubRegion, decimal: boolean = false)
         throw 'SHOULD HAVE 1 TOKEN! SUBREGION TYPE = TEN';
       sum += convertChunkToNumber(subRegion.tokens[0].lowerCaseValue);
       break;
+    case TOKEN_TYPE.HUNDRED:
+      if (subRegion.tokens.length > 1 || subRegion.tokens.length === 0)
+        throw 'SHOULD HAVE 1 TOKEN! SUBREGION TYPE = HUNDRED';
+      sum += convertChunkToNumber(subRegion.tokens[0].lowerCaseValue);
+      break;
     case TOKEN_TYPE.MAGNITUDE:
       subRegion.tokens.map(token => {
         switch (token.type) {
           case TOKEN_TYPE.UNIT:
           case TOKEN_TYPE.TEN:
+          case TOKEN_TYPE.HUNDRED:
             sum += convertChunkToNumber(token.lowerCaseValue);
             break;
           case TOKEN_TYPE.MAGNITUDE:
@@ -194,7 +200,7 @@ export const compiler = (
     });
     return parseFloat(temp);
   }
-  if (regions[0].end - regions[0].start === text.length - 1) {
+  if (regions.length && regions[0].end - regions[0].start === text.length - 1) {
     return compileRegion(regions[0]);
   }
   return replaceRegionsInText(regions, text);
