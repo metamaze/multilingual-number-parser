@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-parens */
-import { compileSubRegion } from './compiler';
+import {compileSubRegion} from './compiler';
 import {
   BLACKLIST_SINGULAR_WORDS,
   DECIMALS,
@@ -8,11 +8,12 @@ import {
   NUMBER_WORDS,
   PUNCTUATION,
   TEN_KEYS,
+  HUNDRED_KEYS,
   TOKEN_TYPE,
   UNIT_KEYS,
 } from './constants';
-import { modifyDutch, modifyEnglish } from './modifiers';
-import { HANDLE_TOKEN, Languages, Region, SubRegion, Token } from './types';
+import {modifyDutch, modifyEnglish, modifyPortuguese} from './modifiers';
+import {HANDLE_TOKEN, Languages, Region, SubRegion, Token} from './types';
 
 /**
  * Check if token can be appened to the sub region
@@ -21,7 +22,7 @@ import { HANDLE_TOKEN, Languages, Region, SubRegion, Token } from './types';
  * @returns
  */
 const canAddTokenToEndOfSubRegion = (subRegion: SubRegion, currentToken: Token) => {
-  const { tokens } = subRegion;
+  const {tokens} = subRegion;
   const prevToken = tokens[0];
   if (!prevToken) return true;
   if (prevToken.type === TOKEN_TYPE.DECIMAL) return false;
@@ -51,9 +52,9 @@ const canAddTokenToEndOfSubRegion = (subRegion: SubRegion, currentToken: Token) 
  * @returns {type: TOKEN_TYPE}
  */
 const getSubRegionType = (subRegion: SubRegion, currentToken: Token): { type: TOKEN_TYPE } => {
-  if (currentToken.type === TOKEN_TYPE.DECIMAL) return { type: TOKEN_TYPE.DECIMAL };
-  if (subRegion && subRegion.type === TOKEN_TYPE.MAGNITUDE) return { type: TOKEN_TYPE.MAGNITUDE };
-  return { type: currentToken.type };
+  if (currentToken.type === TOKEN_TYPE.DECIMAL) return {type: TOKEN_TYPE.DECIMAL};
+  if (subRegion && subRegion.type === TOKEN_TYPE.MAGNITUDE) return {type: TOKEN_TYPE.MAGNITUDE};
+  return {type: currentToken.type};
 };
 
 /**
@@ -63,12 +64,12 @@ const getSubRegionType = (subRegion: SubRegion, currentToken: Token): { type: TO
  * @returns {HANDLE_TOKEN,TOKEN_TYPE} what should happen with the token and subregion (start new region, add)
  */
 const checkIfTokenFitsSubRegion = (subRegion: SubRegion, token: Token): { action: HANDLE_TOKEN; type: TOKEN_TYPE } => {
-  const { type } = getSubRegionType(subRegion, token);
-  if (!subRegion) return { action: HANDLE_TOKEN.START_NEW_REGION, type };
+  const {type} = getSubRegionType(subRegion, token);
+  if (!subRegion) return {action: HANDLE_TOKEN.START_NEW_REGION, type};
   if (canAddTokenToEndOfSubRegion(subRegion, token)) {
-    return { action: HANDLE_TOKEN.ADD, type };
+    return {action: HANDLE_TOKEN.ADD, type};
   }
-  return { action: HANDLE_TOKEN.START_NEW_REGION, type };
+  return {action: HANDLE_TOKEN.START_NEW_REGION, type};
 };
 
 /**
@@ -84,7 +85,7 @@ const getSubRegions = (region: Region): SubRegion[] => {
   let i = tokensCount - 1;
   while (i >= 0) {
     const token = region.tokens[i];
-    const { action, type } = checkIfTokenFitsSubRegion(currentSubRegion!, token);
+    const {action, type} = checkIfTokenFitsSubRegion(currentSubRegion!, token);
     token.type = token.type;
     switch (action) {
       case HANDLE_TOKEN.ADD: {
@@ -119,7 +120,7 @@ const getSubRegions = (region: Region): SubRegion[] => {
  * @returns {boolean}
  */
 const canAddTokenToEndOfRegion = (region: Region, currentToken: Token): boolean => {
-  const { tokens } = region;
+  const {tokens} = region;
   const prevToken = tokens[tokens.length - 1];
   //If previous and current token are both UNITS and there is NO DECIMAL => false (five five is not valid, but five.five is a valid combination)
   if (prevToken.type === TOKEN_TYPE.UNIT && currentToken.type === TOKEN_TYPE.UNIT && !region.hasDecimal) return false;
@@ -241,7 +242,7 @@ const matchRegions = (tokens: Token[]): Region[] => {
     }
     i++;
   }
-  return regions.map(region => ({ ...region, subRegions: getSubRegions(region) }));
+  return regions.map(region => ({...region, subRegions: getSubRegions(region)}));
 };
 /**
  * Check what type the chunk is. This chunk will later be converted to a Token
@@ -254,6 +255,7 @@ const getTokenType = (chunk: string): TOKEN_TYPE => {
   if (TEN_KEYS.includes(chunk.toLowerCase())) return TOKEN_TYPE.TEN;
   if (MAGNITUDE_KEYS.includes(chunk.toLowerCase())) return TOKEN_TYPE.MAGNITUDE;
   if (DECIMALS.includes(chunk.toLowerCase())) return TOKEN_TYPE.DECIMAL;
+  if(HUNDRED_KEYS.includes(chunk.toLowerCase())) return TOKEN_TYPE.HUNDRED;
 };
 
 /**
@@ -276,6 +278,10 @@ export const parser = (text: string, language: Languages): Region[] => {
         break;
       case Languages['en-us']:
         splitted = modifyEnglish(currentValue);
+        break;
+      case Languages['pt-br']:
+        currentValue = currentValue.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        splitted = modifyPortuguese(currentValue);
         break;
     }
 

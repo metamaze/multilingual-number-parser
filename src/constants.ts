@@ -41,6 +41,79 @@ export const ENGLISH_UNIT = {
   a: 1,
 };
 
+export const PORTUGUESE_UNIT = {
+  zero: 0,
+
+  um: 1,
+  uma: 1,
+  primeiro: 1,
+  primeira: 1,
+  primeiros: 1,
+  primeiras: 1,
+
+  dois: 2,
+  duas: 2,
+  segundo: 2,
+  segunda: 2,
+  segundos: 2,
+  segundas: 2,
+
+  tres: 3,
+  terceiro: 3,
+  terceira: 3,
+  terceiros: 3,
+  terceiras: 3,
+
+  quatro: 4,
+  quarto: 4,
+  quarta: 4,
+  quartos: 4,
+  quartas: 4,
+
+  cinco: 5,
+  quinto: 5,
+  quinta: 5,
+  quintos: 5,
+  quintas: 5,
+
+  seis: 6,
+  sexto: 6,
+  sexta: 6,
+  sextos: 6,
+  sextas: 6,
+
+  sete: 7,
+  setimo: 7,
+  setima: 7,
+  setimos: 7,
+  setimas: 7,
+
+  oito: 8,
+  oitavo: 8,
+  oitava: 8,
+  oitavos: 8,
+  oitavas: 8,
+
+  nove: 9,
+  nono: 9,
+  nona: 9,
+  nonos: 9,
+  nonas: 9,
+
+  dez: 10,
+
+  onze: 11,
+  doze: 12,
+  treze: 13,
+  quatorze: 14,
+  catorze: 14,
+  quinze: 15,
+  dezesseis: 16,
+  dezessete: 17,
+  dezoito: 18,
+  dezenove: 19,
+}
+
 export const ENGLISH_TEN = {
   twenty: 20,
   twentieth: 20,
@@ -60,6 +133,126 @@ export const ENGLISH_TEN = {
   ninetieth: 90,
 };
 
+export const PORTUGUESE_TEN = {
+  decima: 10,
+  decimo: 10,
+  decimos: 10,
+  decimas: 10,
+
+  vinte: 20,
+  vigesimo: 20,
+  vigesima: 20,
+  vigesimos: 20,
+  vigesimas: 20,
+
+  trinta: 30,
+  trigesimo: 30,
+  trigesima: 30,
+  trigesimos: 30,
+  trigesimas: 30,
+
+  quarenta: 40,
+  quadragesimo: 40,
+  quadragesima: 40,
+  quadragesimos: 40,
+  quadragesimas: 40,
+
+  cinquenta: 50,
+  quinquagesimo: 50,
+  quinquagesima: 50,
+  quinquagesimos: 50,
+  quinquagesimas: 50,
+
+  sessenta: 60,
+  sexagesimo: 60,
+  sexagesima: 60,
+  sexagesimos: 60,
+  sexagesimas: 60,
+
+  setenta: 70,
+  septuagesimo: 70,
+  septuagesima: 70,
+  septuagesimos: 70,
+  septuagesimas: 70,
+
+  oitenta: 80,
+  octogesimo: 80,
+  octogesima: 80,
+  octogesimos: 80,
+  octogesimas: 80,
+
+  noventa: 90,
+  nonagesimo: 90,
+  nonagesima: 90,
+  nonagesimos: 90,
+  nonagesimas: 90,
+};
+
+export const PORTUGUESE_HUNDRED = {
+  cem: 100,
+  cento: 100,
+  centesimo: 100,
+  centesima: 100,
+  centesimos: 100,
+  centesimas: 100,
+
+  duzentos: 200,
+  duzentas: 200,
+  duzentesimo: 200,
+  duzentesima: 200,
+  duzentesimos: 200,
+  duzentesimas: 200,
+
+  trezentos: 300,
+  trezentas: 300,
+  trecentesimo: 300,
+  trecentesima: 300,
+  trecentesimos: 300,
+  trecentesimas: 300,
+
+  quatrocentos: 400,
+  quatrocentas: 400,
+  quatrocentesimo: 400,
+  quatrocentesima: 400,
+  quatrocentesimos: 400,
+  quatrocentesimas: 400,
+
+  quinhentos: 500,
+  quinhentas: 500,
+  quingentesimo: 500,
+  quingentesima: 500,
+  quingentesimos: 500,
+  quingentesimas: 500,
+
+  seiscentos: 600,
+  seiscentas: 600,
+  sexcentesimo: 600,
+  sexcentesima: 600,
+  sexcentesimos: 600,
+  sexcentesimas: 600,
+
+  setecentos: 700,
+  setecentas: 700,
+  septingentesimo: 700,
+  septingentesima: 700,
+  septingentesimos: 700,
+  septingentesimas: 700,
+
+  oitocentos: 800,
+  oitocentas: 800,
+  octingentesimo: 800,
+  octingentesima: 800,
+  octingentesimos: 800,
+  octingentesimas: 800,
+
+  novecentos: 900,
+  novecentas: 900,
+  nongentesimo: 900,
+  nongentesima: 900,
+  noningentesimos: 900,
+  noningentesimas: 900,
+}
+
 export const ENGLISH_MAGNITUDE = {
   hundred: 100,
   hundredth: 100,
@@ -75,6 +268,35 @@ export const ENGLISH_MAGNITUDE = {
   nonillion: 1000000000000000000000000000000,
   decillion: 1000000000000000000000000000000000,
 };
+
+export const PORTUGUESE_MAGNITUDE = {
+  mil: 1000,
+  milesimo: 1000,
+  milesima: 1000,
+  milesimos: 1000,
+  milesimas: 1000,
+
+  milhao: 1000000,
+  milhoes: 1000000,
+  milionesimo: 1000000,
+  milionesima: 1000000,
+  milionesimos: 1000000,
+  milionesimas: 1000000,
+
+  bilhao: 1000000000,
+  bilhoes: 1000000000,
+  bilionesimo: 1000000000,
+  bilionesima: 1000000000,
+  bilionesimos: 1000000000,
+  bilionesimas: 1000000000,
+
+  trilhao: 1000000000000,
+  trilhoes: 1000000000000,
+  trilionesimo: 1000000000000,
+  trilionesima: 1000000000000,
+  trilionesimos: 1000000000000,
+  trilionesimas: 1000000000000,
+}
 
 export const DUTCH_UNIT = {
   nul: 0,
@@ -161,20 +383,26 @@ export const NUMBER = {
   ...DUTCH_UNIT,
   ...DUTCH_TEN,
   ...DUTCH_MAGNITUDE,
+  ...PORTUGUESE_UNIT,
+  ...PORTUGUESE_TEN,
+  ...PORTUGUESE_MAGNITUDE,
+  ...PORTUGUESE_HUNDRED,
 };
 
-export const UNIT_KEYS = Object.keys({ ...ENGLISH_UNIT, ...DUTCH_UNIT });
-export const TEN_KEYS = Object.keys({ ...ENGLISH_TEN, ...DUTCH_TEN });
+export const UNIT_KEYS = Object.keys({...ENGLISH_UNIT, ...DUTCH_UNIT, ...PORTUGUESE_UNIT});
+export const TEN_KEYS = Object.keys({...ENGLISH_TEN, ...DUTCH_TEN, ...PORTUGUESE_TEN});
+export const HUNDRED_KEYS = Object.keys({...PORTUGUESE_HUNDRED});
 export const MAGNITUDE_KEYS = Object.keys({
   ...ENGLISH_MAGNITUDE,
   ...DUTCH_MAGNITUDE,
+  ...PORTUGUESE_MAGNITUDE,
 });
 
 //@ts-ignore
-export const NUMBER_WORDS = [...UNIT_KEYS, ...TEN_KEYS, ...MAGNITUDE_KEYS];
+export const NUMBER_WORDS = [...UNIT_KEYS, ...TEN_KEYS, ...MAGNITUDE_KEYS, ...Object.keys(PORTUGUESE_HUNDRED)];
 
-export const JOINERS = ['and', 'en'];
-export const DECIMALS = ['point', 'dot', 'komma', 'punt'];
+export const JOINERS = ['and', 'en', 'e'];
+export const DECIMALS = ['point', 'dot', 'komma', 'punt', 'virgula'];
 
 export const PUNCTUATION = [
   '.',
@@ -207,6 +435,7 @@ export enum TOKEN_TYPE {
   TEN = 'TEN',
   MAGNITUDE = 'MAGNITUDE',
   DECIMAL = 'DECIMAL',
+  HUNDRED = 'HUNDRED',
 }
 
 export const ALL_WORDS = [...NUMBER_WORDS, ...JOINERS, ...DECIMALS];
