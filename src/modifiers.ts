@@ -341,7 +341,6 @@ export const modifyEnglish = (chunk: string): string | string[] => {
         )
           return [longestStart.value, longestEnd.value];
       } else {
-        console.log(longestStart, longestEnd, possibleSplitter, chunk);
         throw 'CANNOT PARSE CHUNK INTO NUMBER (ENGLISH: CANNOT FIND A GOOD SPLITTER)';
       }
     }
@@ -423,7 +422,6 @@ export const modifyPortuguese = (chunk: string): string | string[] | undefined =
         )
           return [longestStart.value, longestEnd.value];
       } else {
-        console.log(longestStart, longestEnd, possibleSplitter, chunk);
         throw 'CANNOT PARSE CHUNK INTO NUMBER (ENGLISH: CANNOT FIND A GOOD SPLITTER)';
       }
     }
