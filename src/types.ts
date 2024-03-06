@@ -3,6 +3,7 @@ import { TOKEN_TYPE } from './constants';
 export enum Languages {
   'nl-nl' = 'nl-nl',
   'en-us' = 'en-us',
+  'de-de' = 'de-de',
 }
 /**
  * Token is a 'substring' of a sentence, it includes the position of the substring and checks if this substring is 'word' that needs converting to a number.
