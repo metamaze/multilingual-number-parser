@@ -154,6 +154,54 @@ export const DUTCH_MAGNITUDE = {
   quintiljard: 1000000000000000000000000000000000,
 };
 
+export const GERMAN_UNIT = {
+  null: 0,
+  ein: 1,
+  eins: 1,
+  elf: 11,
+  zwölf: 12,
+  zwei: 2,
+  zwo:2,
+  dreizehn: 13,
+  drei: 3,
+  vierzehn: 14,
+  vier: 4,
+  fünf: 5,
+  fünzehn: 15,
+  sechs: 6,
+  sechzehn: 16,
+  siebzehn: 17,
+  sieben: 7,
+  achtzehn: 18,
+  acht: 8,
+  neunzehn: 19,
+  neun: 9,
+  zehn: 10
+};
+
+export const GERMAN_TEN = {
+  zwanzig: 20,
+  dreissig: 30,
+  dreißig: 30,
+  vierzig: 40,
+  fünfzig: 50,
+  sechzig: 60,
+  siebzig: 70,
+  achtzig: 80,
+  neunzig: 90,
+};
+
+export const GERMAN_MAGNITUDE = {
+  hundert: 100,
+  tausend: 1000,
+  million: 1000000,
+  millionen: 1000000,
+  milliarde: 1000000000,
+  billion: 1000000000000,
+  billiarde: 1000000000000000,
+  trillion: 1000000000000000000
+};
+
 export const NUMBER = {
   ...ENGLISH_UNIT,
   ...ENGLISH_TEN,
@@ -161,19 +209,23 @@ export const NUMBER = {
   ...DUTCH_UNIT,
   ...DUTCH_TEN,
   ...DUTCH_MAGNITUDE,
+  ...GERMAN_UNIT,
+  ...GERMAN_TEN,
+  ...GERMAN_MAGNITUDE,
 };
 
-export const UNIT_KEYS = Object.keys({ ...ENGLISH_UNIT, ...DUTCH_UNIT });
-export const TEN_KEYS = Object.keys({ ...ENGLISH_TEN, ...DUTCH_TEN });
+export const UNIT_KEYS = Object.keys({ ...ENGLISH_UNIT, ...DUTCH_UNIT, ...GERMAN_UNIT });
+export const TEN_KEYS = Object.keys({ ...ENGLISH_TEN, ...DUTCH_TEN, ...GERMAN_TEN });
 export const MAGNITUDE_KEYS = Object.keys({
   ...ENGLISH_MAGNITUDE,
   ...DUTCH_MAGNITUDE,
+  ...GERMAN_MAGNITUDE,
 });
 
 //@ts-ignore
 export const NUMBER_WORDS = [...UNIT_KEYS, ...TEN_KEYS, ...MAGNITUDE_KEYS];
 
-export const JOINERS = ['and', 'en'];
+export const JOINERS = ['and', 'en', 'und'];
 export const DECIMALS = ['point', 'dot', 'komma', 'punt'];
 
 export const PUNCTUATION = [

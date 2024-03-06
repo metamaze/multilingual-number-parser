@@ -19,7 +19,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
-  "peerDependencies": {},
+  "type": "module",
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -45,17 +45,15 @@
     }
   ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^7.0.8",
+    "@size-limit/preset-small-lib": "^11.0.2",
     "@types/chai": "^4.3.0",
-    "@types/jest": "^27.4.0",
-    "@types/mocha": "^9.1.0",
-    "husky": "^7.0.4",
-    "size-limit": "^7.0.8",
+    "@types/jest": "^29.5.12",
+    "@types/mocha": "^10.0.6",
+    "husky": "^9.0.11",
+    "size-limit": "^11.0.2",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",
-    "typescript": "^4.5.5"
-  },
-  "dependencies": {
-    "chai": "^4.3.6"
+    "typescript": "^5.3.3",
+    "chai": "^5.1.0"
   }
 }

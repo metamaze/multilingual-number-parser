@@ -2,6 +2,9 @@ import {
   DUTCH_MAGNITUDE,
   DUTCH_TEN,
   DUTCH_UNIT,
+  GERMAN_MAGNITUDE,
+  GERMAN_TEN,
+  GERMAN_UNIT,
   ENGLISH_MAGNITUDE,
   ENGLISH_SPECIFIC_SPLIT,
   ENGLISH_TEN,
@@ -120,6 +123,111 @@ function predict(
   });
   return { longestStart, longestEnd };
 }
+
+export const modifyGerman = (chunk: string): string | string[] => {
+  const units = [...Object.keys(GERMAN_UNIT)];
+  const tens = [...Object.keys(GERMAN_TEN)];
+  const magnitudes = [...Object.keys(GERMAN_MAGNITUDE)];
+
+  if (
+    units.includes(chunk) ||
+    tens.includes(chunk) ||
+    magnitudes.includes(chunk)
+  ) {
+    return chunk; //This chunk is already a whole number that doesn't need converting
+  }
+
+  const possibleUnits: string[] = units.filter(unit => chunk.includes(unit));
+  const possibleTens: string[] = tens.filter(unit => chunk.includes(unit));
+  const possibleMagnitudes: string[] = magnitudes.filter(unit =>
+    chunk.includes(unit)
+  );
+
+  const possibilities: Possibility[] = calculatePossibilities(
+    possibleUnits,
+    possibleTens,
+    possibleMagnitudes,
+    chunk
+  );
+  let numbers: Possibility[] = [];
+
+  // Filter out smaller units
+  for (const possibility of possibilities) {
+    switch (possibility.type) {
+      case TOKEN_TYPE.UNIT: {
+        const nested = possibilities.find(p => {
+          return (
+            p.value !== possibility.value &&
+            p.start <= possibility.start &&
+            p.end >= possibility.end
+          );
+        });
+        if (!nested) {
+          numbers.push(possibility);
+        }
+        break;
+      }
+      case TOKEN_TYPE.TEN: {
+        const hasAdjective = possibilities.find(p => {
+          return (
+            p.value.includes(possibility.value) &&
+            p.start === possibility.start &&
+            p.end > possibility.end
+          );
+        });
+        if (!hasAdjective) numbers.push(possibility);
+        break;
+      }
+      default:
+        numbers.push(possibility);
+        break;
+    }
+  }
+
+  numbers = numbers.sort((a, b) => {
+    return a.start - b.start;
+  });
+
+  const result: string[] = [];
+  for (let i = 0; i < numbers.length; i++) {
+    const previous = numbers[i - 1];
+    const next = numbers[i + 1];
+    const number = numbers[i];
+    if (!previous) {
+      if(!next) {
+        result.push(number.value);
+      } else if (
+        number.type === TOKEN_TYPE.UNIT &&
+        next.type === TOKEN_TYPE.MAGNITUDE
+      ) {
+        result.push(number.value);
+      } else if (
+        number.type === TOKEN_TYPE.UNIT &&
+        next.type === TOKEN_TYPE.TEN
+      ) {
+        result.push(next.value);
+      } else {
+        result.push(number.value);
+      }
+    } else {
+      if (number.type === TOKEN_TYPE.TEN && previous.type === TOKEN_TYPE.UNIT) {
+        result.push(previous.value);
+      } else if (
+        number.type === TOKEN_TYPE.MAGNITUDE &&
+        previous.type === TOKEN_TYPE.UNIT
+      ) {
+        result.push(number.value);
+      } else if (
+        number.type === TOKEN_TYPE.UNIT &&
+        next &&
+        next.type === TOKEN_TYPE.TEN
+      ) {
+        result.push(next.value);
+      } else result.push(number.value);
+    }
+  }
+  return result;
+};
 
 /**
  * Changes the lexicongraphy of dutch chunks so the compiler understands which number
